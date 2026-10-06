@@ -23,7 +23,7 @@ def status_arkhe() -> dict[str, str]:
     return {
         "servico": "Banco Arkhé MCP",
         "status": "online",
-        "versao": "0.2.0",
+        "versao": "0.3.0",
     }
 
 
@@ -46,7 +46,7 @@ async def consultar_dados_conta(ctx: Context) -> dict:
 
 @mcp.tool()
 async def consultar_saldo(ctx: Context) -> dict:
-    """Consulta o saldo disponível da conta Arkhé selecionada na sessão autenticada."""
+    """Consulta o saldo disponível da conta Arkhé selecionada."""
     sessao = obter_sessao_arkhe(ctx)
     dados = await arkhe_api.consultar_saldo(sessao)
 
@@ -54,6 +54,65 @@ async def consultar_saldo(ctx: Context) -> dict:
         "saldo": dados.get("saldo"),
         "moeda": "BRL",
     }
+
+
+@mcp.tool()
+async def consultar_extrato(
+    ctx: Context,
+    data_inicio: str | None = None,
+    data_fim: str | None = None,
+    limite: int = 50,
+) -> dict:
+    """Consulta o extrato da conta. Datas opcionais devem usar YYYY-MM-DD."""
+    sessao = obter_sessao_arkhe(ctx)
+
+    return await arkhe_api.consultar_extrato(
+        sessao,
+        data_inicio=data_inicio,
+        data_fim=data_fim,
+        limite=limite,
+    )
+
+
+@mcp.tool()
+async def consultar_dda(
+    ctx: Context,
+    limite: int = 50,
+) -> dict:
+    """Consulta os boletos registrados para pagamento pela conta selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_dda(sessao, limite=limite)
+
+
+@mcp.tool()
+async def consultar_boletos(
+    ctx: Context,
+    limite: int = 50,
+) -> dict:
+    """Consulta boletos a pagar e a receber vinculados à conta selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_boletos(sessao, limite=limite)
+
+
+@mcp.tool()
+async def consultar_faturas(ctx: Context) -> dict:
+    """Consulta faturas fechadas e próximas faturas do cartão da conta."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_faturas(sessao)
+
+
+@mcp.tool()
+async def consultar_limites(ctx: Context) -> dict:
+    """Consulta os limites de crédito disponíveis no cartão da conta."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_limites(sessao)
+
+
+@mcp.tool()
+async def listar_chaves_pix(ctx: Context) -> dict:
+    """Lista as chaves Pix cadastradas na conta selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.listar_chaves_pix(sessao)
 
 
 if __name__ == "__main__":
