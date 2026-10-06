@@ -23,7 +23,7 @@ def status_arkhe() -> dict[str, str]:
     return {
         "servico": "Banco Arkhé MCP",
         "status": "online",
-        "versao": "0.3.0",
+        "versao": "0.4.0",
     }
 
 
@@ -113,6 +113,49 @@ async def listar_chaves_pix(ctx: Context) -> dict:
     """Lista as chaves Pix cadastradas na conta selecionada."""
     sessao = obter_sessao_arkhe(ctx)
     return await arkhe_api.listar_chaves_pix(sessao)
+
+
+@mcp.tool()
+async def listar_funcionarios(ctx: Context) -> dict:
+    """Lista funcionários e resumo da folha mensal da empresa selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.listar_funcionarios(sessao)
+
+
+@mcp.tool()
+async def consultar_funcionario(
+    ctx: Context,
+    id_funcionario: int,
+) -> dict:
+    """Consulta um funcionário da empresa selecionada pelo identificador interno."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_funcionario(
+        sessao,
+        id_funcionario=id_funcionario,
+    )
+
+
+@mcp.tool()
+async def consultar_folhas(
+    ctx: Context,
+    limite: int = 12,
+) -> dict:
+    """Consulta o histórico de folhas de pagamento da empresa selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.listar_folhas(sessao, limite=limite)
+
+
+@mcp.tool()
+async def consultar_folha(
+    ctx: Context,
+    id_folha: int,
+) -> dict:
+    """Consulta uma folha de pagamento e seus funcionários detalhadamente."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.consultar_folha(
+        sessao,
+        id_folha=id_folha,
+    )
 
 
 if __name__ == "__main__":
