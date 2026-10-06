@@ -23,7 +23,7 @@ def status_arkhe() -> dict[str, str]:
     return {
         "servico": "Banco Arkhé MCP",
         "status": "online",
-        "versao": "0.4.0",
+        "versao": "0.5.0",
     }
 
 
@@ -156,6 +156,13 @@ async def consultar_folha(
         sessao,
         id_folha=id_folha,
     )
+
+
+@mcp.tool()
+async def gerar_relatorio_funcionarios_pdf(ctx: Context) -> dict:
+    """Gera um PDF temporário com funcionários e salários da empresa selecionada."""
+    sessao = obter_sessao_arkhe(ctx)
+    return await arkhe_api.gerar_relatorio_funcionarios(sessao)
 
 
 if __name__ == "__main__":
