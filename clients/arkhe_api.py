@@ -112,3 +112,38 @@ class ArkheAPI:
 
     async def listar_chaves_pix(self, sessao_arkhe: str) -> dict:
         return await self._get("/internal/mcp/chaves-pix", sessao_arkhe)
+
+
+    async def listar_funcionarios(self, sessao_arkhe: str) -> dict:
+        return await self._get("/internal/mcp/funcionarios", sessao_arkhe)
+
+    async def consultar_funcionario(
+        self,
+        sessao_arkhe: str,
+        id_funcionario: int,
+    ) -> dict:
+        return await self._get(
+            f"/internal/mcp/funcionarios/{id_funcionario}",
+            sessao_arkhe,
+        )
+
+    async def listar_folhas(
+        self,
+        sessao_arkhe: str,
+        limite: int = 12,
+    ) -> dict:
+        return await self._get(
+            "/internal/mcp/folhas",
+            sessao_arkhe,
+            params={"limite": limite},
+        )
+
+    async def consultar_folha(
+        self,
+        sessao_arkhe: str,
+        id_folha: int,
+    ) -> dict:
+        return await self._get(
+            f"/internal/mcp/folhas/{id_folha}",
+            sessao_arkhe,
+        )
