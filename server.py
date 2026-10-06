@@ -37,10 +37,10 @@ async def consultar_dados_conta(ctx: Context) -> dict:
         "numero_conta": dados.get("numero_conta"),
         "agencia": dados.get("agencia"),
         "banco": dados.get("banco"),
-        "tipo_conta": dados.get("tipo_conta"),
+        "tipo_conta": "PJ" if dados.get("tipo_conta") == 1 else "PF",
         "nome": dados.get("nome"),
         "vinculo": dados.get("vinculo"),
-        "cargo": dados.get("cargo"),
+        "cargo": dados.get("cargo_nome"),
     }
 
 
