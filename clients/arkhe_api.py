@@ -147,3 +147,18 @@ class ArkheAPI:
             f"/internal/mcp/folhas/{id_folha}",
             sessao_arkhe,
         )
+
+
+    async def gerar_relatorio_funcionarios(self, sessao_arkhe: str) -> dict:
+        dados = await self._get(
+            "/internal/mcp/relatorios/funcionarios",
+            sessao_arkhe,
+        )
+
+        download_path = dados.get("download_path")
+
+        if download_path:
+            dados["download_url"] = self.base_url + download_path
+
+        dados.pop("download_path", None)
+        return dados
