@@ -1,4 +1,4 @@
-from mcp.server import MCPServer
+from mcp.server.mcpserver import MCPServer
 
 from config import HOST, PORT
 
